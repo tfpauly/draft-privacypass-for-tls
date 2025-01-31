@@ -19,35 +19,29 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: "Including Privacy Pass Tokens in TLS Handshakes"
+abbrev: "Privacy Pass for TLS"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
-submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
+docname: draft-pauly-privacypass-for-tls-latest
+submissiontype: IETF
 number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
-keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+area: SEC
+workgroup: PRIVACYPASS Working Group
 venue:
-  group: WG
+  group: PRIVACYPASS
   type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  mail: privacypass@ietf.org
+  github: tpauly/draft-privacypass-for-tls
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Tommy Pauly
+    organization: Apple
+    email: tpauly@apple.com
 
 normative:
 
