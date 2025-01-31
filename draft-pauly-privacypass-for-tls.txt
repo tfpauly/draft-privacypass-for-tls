@@ -69,11 +69,14 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Security Considerations
-   4.  IANA Considerations
-   5.  References
-     5.1.  Normative References
-     5.2.  Informative References
+   3.  Requesting Privacy Pass Tokens
+   4.  Presenting Privacy Pass Tokens in Encrypted Client Hello
+   5.  Security Considerations
+   6.  IANA Considerations
+     6.1.  Update of the TLS ExtensionType Registry
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
    Acknowledgments
    Author's Address
 
@@ -92,12 +95,12 @@ Table of Contents
    example, [I-D.sawant-eap-ppt] defines how to include tokens in EAP
    (Extensible Authentication Protocol) exchanges.
 
-   Some server deployments enforce rate-limiting on TLS [TLS] handshakes
-   to prevent denial-of-service (DoS) attacks, particularly by rate
-   limiting the number of connections allowed from individual client IP
-   addresses or IP address subnets.  This can particularly impact cases
-   where many clients are using a particular IP subnet due to using a
-   privacy-preserving proxy (some examples are described in
+   Some server deployments enforce rate-limiting on TLS [TLS13]
+   handshakes to prevent denial-of-service (DoS) attacks, particularly
+   by rate limiting the number of connections allowed from individual
+   client IP addresses or IP address subnets.  This can particularly
+   impact cases where many clients are using a particular IP subnet due
+   to using a privacy-preserving proxy (some examples are described in
    [PRIVACYPARTITIONING]).  For such cases, even if clients are able to
    provide Privacy Pass Tokens or similar proofs at the HTTP layer,
    their connections might be denied or rate-limiting during TLS session
@@ -119,17 +122,51 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  Security Considerations
+3.  Requesting Privacy Pass Tokens
+
+   TODO
+
+   *  Clients won't always include tokens
+
+   *  Servers send challenges in HRR, similar to cookie
+
+   *  Should have a context to sign over
+
+4.  Presenting Privacy Pass Tokens in Encrypted Client Hello
+
+   TODO
+
+   *  Clients include the token inside encrypted client hello
+
+   *  If no ECH, no use of privacy pass
+
+5.  Security Considerations
 
    TODO Security
 
-4.  IANA Considerations
+   *  Preventing replay attacks
 
-   This document has no IANA actions.
+   *  Privacy/timing attacks
 
-5.  References
+6.  IANA Considerations
 
-5.1.  Normative References
+6.1.  Update of the TLS ExtensionType Registry
+
+   IANA is requested to create the following entries in the existing
+   registry for ExtensionType (defined in [TLS13]):
+
+   1.  privacy_pass_challenge(0xfd00), with the "TLS 1.3" column values
+       set to "HRR", "DTLS-Only" column set to "N", "Recommended" column
+       set to "Yes".
+
+   2.  privacy_pass_token(TBD), with "TLS 1.3" column values set to
+       "CH", "DTLS-Only" column set to "N", and "Recommended" column set
+       to "Yes", and the "Comment" column set to "Only appears in inner
+       CH."
+
+7.  References
+
+7.1.  Normative References
 
    [ECH]      Rescorla, E., Oku, K., Sullivan, N., and C. A. Wood, "TLS
               Encrypted Client Hello", Work in Progress, Internet-Draft,
@@ -154,11 +191,11 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [TLS]      Rescorla, E., "The Transport Layer Security (TLS) Protocol
+   [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/rfc/rfc8446>.
 
-5.2.  Informative References
+7.2.  Informative References
 
    [I-D.sawant-eap-ppt]
               Sawant, P. and B. Brinckman, "Extensible Authentication
