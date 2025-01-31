@@ -9,13 +9,13 @@ number:
 date:
 consensus: true
 v: 3
-area: SEC
-workgroup: PRIVACYPASS Working Group
+area: ""
+workgroup: "Privacy Pass"
 venue:
-  group: PRIVACYPASS
-  type: Working Group
-  mail: privacypass@ietf.org
-  github: tpauly/draft-privacypass-for-tls
+  group: "Privacy Pass"
+  type: ""
+  mail: "privacy-pass@ietf.org"
+  github: "tfpauly/draft-privacypass-for-tls"
 
 author:
  -
