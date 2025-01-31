@@ -52,7 +52,7 @@ However, Privacy Pass Tokens can also be used in other contexts and protocols.
 For example, {{?I-D.sawant-eap-ppt}} defines how to include tokens in EAP
 (Extensible Authentication Protocol) exchanges.
 
-Some server deployments enforce rate-limiting on TLS {{!TLS=RFC8446}} handshakes
+Some server deployments enforce rate-limiting on TLS {{!TLS13=RFC8446}} handshakes
 to prevent denial-of-service (DoS) attacks, particularly by rate limiting the
 number of connections allowed from individual client IP addresses or IP address
 subnets. This can particularly impact cases where many clients are using a
@@ -72,16 +72,42 @@ able to directly observe the tokens.
 
 {::boilerplate bcp14-tagged}
 
+# Requesting Privacy Pass Tokens
+
+TODO
+
+- Clients won't always include tokens
+- Servers send challenges in HRR, similar to cookie
+- Should have a context to sign over
+
+
+# Presenting Privacy Pass Tokens in Encrypted Client Hello
+
+TODO
+
+- Clients include the token inside encrypted client hello
+- If no ECH, no use of privacy pass
+
 
 # Security Considerations
 
 TODO Security
 
+- Preventing replay attacks
+- Privacy/timing attacks
 
 # IANA Considerations
 
-This document has no IANA actions.
+## Update of the TLS ExtensionType Registry
 
+IANA is requested to create the following entries in the existing registry for
+ExtensionType (defined in {{TLS13}}):
+
+1. privacy_pass_challenge(0xfd00), with the "TLS 1.3" column values set to "HRR",
+   "DTLS-Only" column set to "N", "Recommended" column set to "Yes".
+1. privacy_pass_token(TBD), with "TLS 1.3" column values set to
+   "CH", "DTLS-Only" column set to "N", and "Recommended" column set
+   to "Yes", and the "Comment" column set to "Only appears in inner CH."
 
 --- back
 
