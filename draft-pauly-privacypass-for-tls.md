@@ -63,7 +63,7 @@ limiting the number of connections allowed from individual client IP addresses
 or IP address subnets. This is common in scenarios where the cost of handling a
 terminated TLS connection is significantly higher than handling the initial
 handshake, like in L7 loadbalancers with heavy-weight protocool conversions
-after termination. 
+after termination.
 
 This enforcement can particularly impact cases where many clients are using a
 particular IP subnet due to using a privacy-preserving proxy (some examples are
@@ -89,7 +89,7 @@ token early in the handshake.
 
 Servers may require that the Excrypted Client Hello contains the
 privacy_pass_challenge. If the privacypass deployment requires context to sign
-over, servers should implement a Hello Retry Request {{!TLS13HHR=RFC8446 Section
+over, servers should implement a Hello Retry Request {{!RFC8446, Section
 4.1.4}} that includes a privacy_pass_challenge.
 
 If a client does not include the token in the Client Hello (or subsequent Client
@@ -108,7 +108,7 @@ Section Should Cover
 # Presenting Privacy Pass Tokens in Encrypted Client Hello
 
 Clients will convert the privacy_pass_challenge (possibly from handling the
-Hello Retry request) into a privacy_pass_token as described in {{!RFC 9577,
+Hello Retry request) into a privacy_pass_token as described in {{!RFC9577,
 Section 2.1.3}}. Clients will provide the now finalized privacy_pass_token to
 the server in the client hello. Clients MUST use {{!ECH}} to pass privacy pass
 tokens. If ECH is not supported, clients or deployments should not use Privacy
