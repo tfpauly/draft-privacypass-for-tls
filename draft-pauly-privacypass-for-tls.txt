@@ -4,8 +4,9 @@
 
 Privacy Pass                                                    T. Pauly
 Internet-Draft                                                     Apple
-Intended status: Informational                           31 January 2025
-Expires: 4 August 2025
+Intended status: Informational                            S. Hendrickson
+Expires: 7 August 2025                                            Google
+                                                         3 February 2025
 
 
             Including Privacy Pass Tokens in TLS Handshakes
@@ -15,9 +16,10 @@ Abstract
 
    This document defines a mechanism for TLS servers to request, and TLS
    clients to provide, Privacy Pass tokens as part of the Encrypted
-   Client Hello in the TLS handshake.  This is a way to add support for
-   anonymous attestation and rate-limiting to servers that are enforcing
-   denial-of-service protections as part of processing TLS handshakes.
+   Client Hello in the TLS handshake.  This creates a way to add support
+   for anonymous attestation and rate-limiting to servers that are
+   enforcing denial-of-service protections as part of processing TLS
+   handshakes.
 
 About This Document
 
@@ -49,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 August 2025.
+   This Internet-Draft will expire on 7 August 2025.
 
 Copyright Notice
 
@@ -78,7 +80,7 @@ Table of Contents
      7.1.  Normative References
      7.2.  Informative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -98,21 +100,26 @@ Table of Contents
    Some server deployments enforce rate-limiting on TLS [TLS13]
    handshakes to prevent denial-of-service (DoS) attacks, particularly
    by rate limiting the number of connections allowed from individual
-   client IP addresses or IP address subnets.  This can particularly
-   impact cases where many clients are using a particular IP subnet due
-   to using a privacy-preserving proxy (some examples are described in
-   [PRIVACYPARTITIONING]).  For such cases, even if clients are able to
-   provide Privacy Pass Tokens or similar proofs at the HTTP layer,
-   their connections might be denied or rate-limiting during TLS session
-   establishment.
+   client IP addresses or IP address subnets.  This is common in
+   scenarios where the cost of handling a terminated TLS connection is
+   significantly higher than handling the initial handshake, like in L7
+   loadbalancers with heavy-weight protocool conversions after
+   termination.
 
-   In order to provide an extra signal that clients are authentic and
-   meet certain criteria (rate-limiting, etc), without disclosing
-   individual client identities or pseudonyms, this document defines a
-   way to include Privacy Pass Tokens within the TLS handshake.
-   Specifically, these tokens are sent within the TLS Encrypted Client
-   Hello [ECH] to prevent network observers from being able to directly
-   observe the tokens.
+   This enforcement can particularly impact cases where many clients are
+   using a particular IP subnet due to using a privacy-preserving proxy
+   (some examples are described in [PRIVACYPARTITIONING]).  For such
+   cases, even if clients are able to provide Privacy Pass Tokens or
+   similar proofs at the HTTP layer, their connections might be denied
+   or rate-limiting during TLS session establishment.
+
+   In order to signal that clients meet certain criteria (rate-limiting,
+   etc), without disclosing individual client identities or pseudonyms,
+   this document defines a way to include Privacy Pass Tokens within the
+   TLS handshake.  Specifically, these tokens are sent within the TLS
+   Encrypted Client Hello [ECH].  This prevents network observers from
+   being able to directly observe the tokens, while still allowing the
+   TLS server to observe the token early in the handshake.
 
 2.  Conventions and Definitions
 
@@ -124,21 +131,43 @@ Table of Contents
 
 3.  Requesting Privacy Pass Tokens
 
-   TODO
+   Servers may require that the Excrypted Client Hello contains the
+   privacy_pass_challenge.  If the privacypass deployment requires
+   context to sign over, servers should implement a Hello Retry Request
+   [RFC8446], Section 4.1.4 that includes a privacy_pass_challenge.
 
-   *  Clients won't always include tokens
+   If a client does not include the token in the Client Hello (or
+   subsequent Client Hello after being challenged), the server may
+   reject the requst.
 
-   *  Servers send challenges in HRR, similar to cookie
+   Section Should Cover
+
+   *  (done) Clients won't always include tokens
+
+   *  (done) Servers send challenges in HRR, similar to cookie
+
+      -  Needs example
 
    *  Should have a context to sign over
 
+      -  Needs example
+
 4.  Presenting Privacy Pass Tokens in Encrypted Client Hello
+
+   Clients will convert the privacy_pass_challenge (possibly from
+   handling the Hello Retry request) into a privacy_pass_token as
+   described in [RFC9577], Section 2.1.3.  Clients will provide the now
+   finalized privacy_pass_token to the server in the client hello.
+   Clients MUST use [ECH] to pass privacy pass tokens.  If ECH is not
+   supported, clients or deployments should not use Privacy Pass tokens
+   in TLS due to potentially adding more tracking entropy visible on the
+   wire.
 
    TODO
 
-   *  Clients include the token inside encrypted client hello
+   *  (done) Clients include the token inside encrypted client hello
 
-   *  If no ECH, no use of privacy pass
+   *  (done) If no ECH, no use of privacy pass
 
 5.  Security Considerations
 
@@ -191,6 +220,15 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
+
+   [RFC9577]  Pauly, T., Valdez, S., and C. A. Wood, "The Privacy Pass
+              HTTP Authentication Scheme", RFC 9577,
+              DOI 10.17487/RFC9577, June 2024,
+              <https://www.rfc-editor.org/rfc/rfc9577>.
+
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/rfc/rfc8446>.
@@ -214,8 +252,13 @@ Acknowledgments
 
    TODO acknowledge.
 
-Author's Address
+Authors' Addresses
 
    Tommy Pauly
    Apple
    Email: tpauly@apple.com
+
+
+   Scott Hendrickson
+   Google
+   Email: scott@shendrickson.com

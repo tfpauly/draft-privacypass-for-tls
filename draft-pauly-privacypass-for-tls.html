@@ -6,16 +6,18 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>Including Privacy Pass Tokens in TLS Handshakes</title>
 <meta content="Tommy Pauly" name="author">
+<meta content="Scott Hendrickson" name="author">
 <meta content="
-       This document defines a mechanism for TLS servers to request, and TLS clients to provide,
-Privacy Pass tokens as part of the Encrypted Client Hello in the TLS handshake. This
-is a way to add support for anonymous attestation and rate-limiting to servers that
-are enforcing denial-of-service protections as part of processing TLS handshakes. 
+       This document defines a mechanism for TLS servers to request, and TLS clients to
+provide, Privacy Pass tokens as part of the Encrypted Client Hello in the TLS
+handshake. This creates a way to add support for anonymous attestation and
+rate-limiting to servers that are enforcing denial-of-service protections as
+part of processing TLS handshakes. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.26.0" name="generator">
 <meta content="draft-pauly-privacypass-for-tls-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
+  xml2rfc 3.26.0
     Python 3.12.8
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1046,11 +1048,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Privacy Pass for TLS</td>
-<td class="right">January 2025</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Pauly</td>
-<td class="center">Expires 4 August 2025</td>
+<td class="left">Pauly &amp; Hendrickson</td>
+<td class="center">Expires 7 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,17 +1065,21 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-pauly-privacypass-for-tls-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-31" class="published">31 January 2025</time>
+<time datetime="2025-02-03" class="published">3 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-04">4 August 2025</time></dd>
-<dt class="label-authors">Author:</dt>
+<dd class="expires"><time datetime="2025-08-07">7 August 2025</time></dd>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">T. Pauly</div>
 <div class="org">Apple</div>
+</div>
+<div class="author">
+      <div class="author-name">S. Hendrickson</div>
+<div class="org">Google</div>
 </div>
 </dd>
 </dl>
@@ -1081,10 +1087,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Including Privacy Pass Tokens in TLS Handshakes</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a mechanism for TLS servers to request, and TLS clients to provide,
-Privacy Pass tokens as part of the Encrypted Client Hello in the TLS handshake. This
-is a way to add support for anonymous attestation and rate-limiting to servers that
-are enforcing denial-of-service protections as part of processing TLS handshakes.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a mechanism for TLS servers to request, and TLS clients to
+provide, Privacy Pass tokens as part of the Encrypted Client Hello in the TLS
+handshake. This creates a way to add support for anonymous attestation and
+rate-limiting to servers that are enforcing denial-of-service protections as
+part of processing TLS handshakes.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1120,7 +1127,7 @@ are enforcing denial-of-service protections as part of processing TLS handshakes
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1187,7 +1194,7 @@ are enforcing denial-of-service protections as part of processing TLS handshakes
             <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1208,20 +1215,26 @@ for providing privacy-preserving authentication or attestation in HTTP workflows
 However, Privacy Pass Tokens can also be used in other contexts and protocols.
 For example, <span>[<a href="#I-D.sawant-eap-ppt" class="cite xref">I-D.sawant-eap-ppt</a>]</span> defines how to include tokens in EAP
 (Extensible Authentication Protocol) exchanges.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Some server deployments enforce rate-limiting on TLS <span>[<a href="#TLS13" class="cite xref">TLS13</a>]</span> handshakes
-to prevent denial-of-service (DoS) attacks, particularly by rate limiting the
-number of connections allowed from individual client IP addresses or IP address
-subnets. This can particularly impact cases where many clients are using a
-particular IP subnet due to using a privacy-preserving proxy (some examples
-are described in <span>[<a href="#PRIVACYPARTITIONING" class="cite xref">PRIVACYPARTITIONING</a>]</span>). For such cases, even if clients
-are able to provide Privacy Pass Tokens or similar proofs at the HTTP layer, their
-connections might be denied or rate-limiting during TLS session establishment.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">In order to provide an extra signal that clients are authentic and meet certain
-criteria (rate-limiting, etc), without disclosing individual client identities
-or pseudonyms, this document defines a way to include Privacy Pass Tokens within
-the TLS handshake. Specifically, these tokens are sent within the TLS Encrypted
-Client Hello <span>[<a href="#ECH" class="cite xref">ECH</a>]</span> to prevent network observers from being
-able to directly observe the tokens.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-3">Some server deployments enforce rate-limiting on TLS <span>[<a href="#TLS13" class="cite xref">TLS13</a>]</span>
+handshakes to prevent denial-of-service (DoS) attacks, particularly by rate
+limiting the number of connections allowed from individual client IP addresses
+or IP address subnets. This is common in scenarios where the cost of handling a
+terminated TLS connection is significantly higher than handling the initial
+handshake, like in L7 loadbalancers with heavy-weight protocool conversions
+after termination.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">This enforcement can particularly impact cases where many clients are using a
+particular IP subnet due to using a privacy-preserving proxy (some examples are
+described in <span>[<a href="#PRIVACYPARTITIONING" class="cite xref">PRIVACYPARTITIONING</a>]</span>). For such cases, even if clients
+are able to provide Privacy Pass Tokens or similar proofs at the HTTP layer,
+their connections might be denied or rate-limiting during TLS session
+establishment.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">In order to signal that clients meet certain criteria (rate-limiting, etc),
+without disclosing individual client identities or pseudonyms, this document
+defines a way to include Privacy Pass Tokens within the TLS handshake.
+Specifically, these tokens are sent within the TLS Encrypted Client Hello
+<span>[<a href="#ECH" class="cite xref">ECH</a>]</span>. This  prevents network observers from being able to
+directly observe the tokens, while still allowing the TLS server to observe the
+token early in the handshake.<a href="#section-1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1240,16 +1253,31 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-requesting-privacy-pass-tok">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-requesting-privacy-pass-tok" class="section-name selfRef">Requesting Privacy Pass Tokens</a>
       </h2>
-<p id="section-3-1">TODO<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">Servers may require that the Excrypted Client Hello contains the
+privacy_pass_challenge. If the privacypass deployment requires context to sign
+over, servers should implement a Hello Retry Request <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>], <a href="https://rfc-editor.org/rfc/rfc8446#section-4.1.4" class="relref">Section 4.1.4</a></span> that includes a privacy_pass_challenge.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">If a client does not include the token in the Client Hello (or subsequent Client
+Hello after being challenged), the server may reject the requst.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">Section Should Cover<a href="#section-3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-2.1">
-          <p id="section-3-2.1.1">Clients won't always include tokens<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-4.1">
+          <p id="section-3-4.1.1">(done) Clients won't always include tokens<a href="#section-3-4.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-2.2">
-          <p id="section-3-2.2.1">Servers send challenges in HRR, similar to cookie<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-4.2">
+          <p id="section-3-4.2.1">(done) Servers send challenges in HRR, similar to cookie<a href="#section-3-4.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-4.2.2.1">
+              <p id="section-3-4.2.2.1.1">Needs example<a href="#section-3-4.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-2.3">
-          <p id="section-3-2.3.1">Should have a context to sign over<a href="#section-3-2.3.1" class="pilcrow">¶</a></p>
+          </ul>
+</li>
+        <li class="normal" id="section-3-4.3">
+          <p id="section-3-4.3.1">Should have a context to sign over<a href="#section-3-4.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-4.3.2.1">
+              <p id="section-3-4.3.2.1.1">Needs example<a href="#section-3-4.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
 </li>
       </ul>
 </section>
@@ -1259,13 +1287,19 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-presenting-privacy-pass-tok">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-presenting-privacy-pass-tok" class="section-name selfRef">Presenting Privacy Pass Tokens in Encrypted Client Hello</a>
       </h2>
-<p id="section-4-1">TODO<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">Clients will convert the privacy_pass_challenge (possibly from handling the
+Hello Retry request) into a privacy_pass_token as described in <span>[<a href="#RFC9577" class="cite xref">RFC9577</a>], <a href="https://rfc-editor.org/rfc/rfc9577#section-2.1.3" class="relref">Section 2.1.3</a></span>. Clients will provide the now finalized privacy_pass_token to
+the server in the client hello. Clients <span class="bcp14">MUST</span> use <span>[<a href="#ECH" class="cite xref">ECH</a>]</span> to pass privacy pass
+tokens. If ECH is not supported, clients or deployments should not use Privacy
+Pass tokens in TLS due to potentially adding more tracking entropy visible on
+the wire.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">TODO<a href="#section-4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4-2.1">
-          <p id="section-4-2.1.1">Clients include the token inside encrypted client hello<a href="#section-4-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4-3.1">
+          <p id="section-4-3.1.1">(done) Clients include the token inside encrypted client hello<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-4-2.2">
-          <p id="section-4-2.2.1">If no ECH, no use of privacy pass<a href="#section-4-2.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-4-3.2">
+          <p id="section-4-3.2.1">(done) If no ECH, no use of privacy pass<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1344,6 +1378,14 @@ to "Yes", and the "Comment" column set to "Only appears in inner CH."<a href="#s
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9577">[RFC9577]</dt>
+        <dd>
+<span class="refAuthor">Pauly, T.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"The Privacy Pass HTTP Authentication Scheme"</span>, <span class="seriesInfo">RFC 9577</span>, <span class="seriesInfo">DOI 10.17487/RFC9577</span>, <time datetime="2024-06" class="refDate">June 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9577">https://www.rfc-editor.org/rfc/rfc9577</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="TLS13">[TLS13]</dt>
       <dd>
 <span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
@@ -1380,8 +1422,8 @@ to "Yes", and the "Comment" column set to "Only appears in inner CH."<a href="#s
 </div>
 <div id="authors-addresses">
 <section id="appendix-B">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Tommy Pauly</span></div>
@@ -1389,6 +1431,14 @@ to "Yes", and the "Comment" column set to "Only appears in inner CH."<a href="#s
 <div class="email">
 <span>Email:</span>
 <a href="mailto:tpauly@apple.com" class="email">tpauly@apple.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Scott Hendrickson</span></div>
+<div dir="auto" class="left"><span class="org">Google</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:scott@shendrickson.com" class="email">scott@shendrickson.com</a>
 </div>
 </address>
 </section>
