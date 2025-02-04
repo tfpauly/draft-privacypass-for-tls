@@ -84,43 +84,76 @@ token early in the handshake.
 
 {::boilerplate bcp14-tagged}
 
-# Requesting Privacy Pass Tokens
+# Overview
 
+Clients can include Privacy Pass tokens as part of the TLS Client Hello
+via the `privacy_pass_token` extension. This is described in {{token_extension}}.
+Clients MAY be configured to always present tokens when performing a TLS
+handshake with a particular server. However, in general, clients SHOULD NOT
+automatically include Privacy Pass tokens; without an explicit challenge,
+clients won't know the relevant token type or issuer to use.
 
-Servers may require that the Excrypted Client Hello contains the
-privacy_pass_challenge. If the privacypass deployment requires context to sign
-over, servers should implement a Hello Retry Request {{!RFC8446, Section
-4.1.4}} that includes a privacy_pass_challenge.
+Server can request tokens by adding the `privacy_pass_challenge` extension
+to a TLS Hello Retry Reqeuest. This is described in {{challenge_extension}}.
+Servers that want to receive Privacy Pass tokens as a way to enforce DoS
+protection SHOULD send challenges to clients when these clients would
+otherwise be blocked or rate-limited in some fashion.
+
+# Requesting Privacy Pass Tokens {#challenge_extension}
+
+In order to request that a client sends a Privacy Pass token, a
+server can send a Hello Retry Request ({{TLS13, Section
+4.1.4}}) that includes a `privacy_pass_challenge` extension.
+
+The `privacy_pass_challenge` extension has the following format:
+
+~~~
+      struct {
+          opaque challenge<1..2^16-1>;
+          opaque token_key<0..2^16-1>;
+      } PrivacyPassChallenge;
+~~~
+
+The fields are defined as follows:
+
+- `challenge` contains a `TokenChallenge` structure, as defined in
+  {{PPAUTH, Section 2.1.1}}.
+- `token_key` contains a public key for use with the issuance protocol,
+  where applicable. This is equivalent to the `token-key` parameter used
+  in HTTP authentication challenges discussed in {{PPAUTH, Section 2.1.1}}.
+  The `token_key` may be empty (have a zero length), in which case clients
+  are expected to fetch the token key for a particular issuer name in
+  another way.
 
 If a client does not include the token in the Client Hello (or subsequent Client
-Hello after being challenged), the server may reject the requst.
+Hello after being challenged), the server MAY reject the requst or apply
+rate-limiting.
 
+Servers sending challenges can use a non-empty `redemption_context`
+in order to bind the token challenge to a particular context (such as the client
+IP address, or a time window) to aid in token replay prevention.
+Servers MAY combine sending `privacy_pass_challenge` extensions with
+a `cookie` extension ({{TLS13, Section 4.2.2}}).
 
-Section Should Cover
+(TODO example)
 
-- (done) Clients won't always include tokens
-- (done) Servers send challenges in HRR, similar to cookie
-   - Needs example
-- Should have a context to sign over
-  - Needs example
+# Presenting Privacy Pass Tokens in Encrypted Client Hello {#token_extension}
 
+Clients can include Privacy Pass tokens in TLS handshakes using the
+`privacy_pass_token` extension. This extension MUST be sent in the Inner Client Hello,
+using {{!ECH}}. If ECH is not supported, clients SHOULD use Privacy
+Pass tokens in TLS in order to avoid adding more tracking entropy visible on
+the wire, and making it easier to trivially replay tokens to a server.
 
-# Presenting Privacy Pass Tokens in Encrypted Client Hello
+The `privacy_pass_token` extension has the following format:
 
-Clients will convert the privacy_pass_challenge (possibly from handling the
-Hello Retry request) into a privacy_pass_token as described in {{!RFC9577,
-Section 2.1.3}}. Clients will provide the now finalized privacy_pass_token to
-the server in the client hello. Clients MUST use {{!ECH}} to pass privacy pass
-tokens. If ECH is not supported, clients or deployments should not use Privacy
-Pass tokens in TLS due to potentially adding more tracking entropy visible on
-the wire.
+~~~
+      struct {
+          opaque token<1..2^16-1>;
+      } PrivacyPassToken;
+~~~
 
-
-TODO
-
-- (done) Clients include the token inside encrypted client hello
-- (done) If no ECH, no use of privacy pass
-
+The `token` field uses the `Token` structure defined in {{PPAUTH, Section 2.1.1}}.
 
 # Security Considerations
 
