@@ -62,7 +62,7 @@ handshakes to prevent denial-of-service (DoS) attacks, particularly by rate
 limiting the number of connections allowed from individual client IP addresses
 or IP address subnets. This is common in scenarios where the cost of handling a
 terminated TLS connection is significantly higher than handling the initial
-handshake, like in L7 loadbalancers with heavy-weight protocool conversions
+handshake, like in L7 loadbalancers with heavy-weight protocol conversions
 after termination.
 
 This enforcement can particularly impact cases where many clients are using a
@@ -93,8 +93,8 @@ handshake with a particular server. However, in general, clients SHOULD NOT
 automatically include Privacy Pass tokens; without an explicit challenge,
 clients won't know the relevant token type or issuer to use.
 
-Server can request tokens by adding the `privacy_pass_challenge` extension
-to a TLS Hello Retry Reqeuest. This is described in {{challenge_extension}}.
+Servers can request tokens by adding the `privacy_pass_challenge` extension
+to a TLS Hello Retry Request. This is described in {{challenge_extension}}.
 Servers that want to receive Privacy Pass tokens as a way to enforce DoS
 protection SHOULD send challenges to clients when these clients would
 otherwise be blocked or rate-limited in some fashion.
@@ -126,20 +126,27 @@ The fields are defined as follows:
   another way.
 
 If a client does not include the token in the Client Hello (or subsequent Client
-Hello after being challenged), the server MAY reject the requst or apply
+Hello after being challenged), the server MAY reject the request or apply
 rate-limiting.
+
+Clients SHOULD apply some form of consistency check on the token challenge
+to avoid (malicious) anonymity set partitioning by the server; see {{Section 6.2
+of PPARCH}} for more details.
 
 Servers sending challenges can use a non-empty `redemption_context`
 in order to bind the token challenge to a particular context (such as the client
 IP address, or a time window) to aid in token replay prevention.
 Servers MAY combine sending `privacy_pass_challenge` extensions with
-a `cookie` extension ({{TLS13, Section 4.2.2}}).
+a `cookie` extension ({{TLS13, Section 4.2.2}}). For example, servers
+that cannot statefully persist the token challenge presented to the
+client in the `privacy_pass_challenge` extension can use the `cookie`
+extension to encode this challenge.
 
 # Presenting Privacy Pass Tokens in Encrypted Client Hello {#token_extension}
 
 Clients can include Privacy Pass tokens in TLS handshakes using the
 `privacy_pass_token` extension. This extension MUST be sent in the Inner Client Hello,
-using {{!ECH}}. If ECH is not supported, clients SHOULD use Privacy
+using {{!ECH}}. If ECH is not supported, clients SHOULD NOT use Privacy
 Pass tokens in TLS in order to avoid adding more tracking entropy visible on
 the wire, and making it easier to trivially replay tokens to a server.
 
@@ -156,8 +163,8 @@ The `token` field uses the `Token` structure defined in {{PPAUTH, Section 2.1.1}
 # Security Considerations
 
 Servers redeeming Privacy Pass tokens in TLS handshakes need to take care to
-avoid replay attacks. Using a redemption context in the challenge makes it
-far easier to validate that tokens are new and unique.
+avoid replay attacks. Using a fresh redemption context in the challenge ensures
+that tokens are equally fresh and unique.
 
 Token issuance types that don't require clients talking to an issuance server
 with a new network request for every token generation will have better properties
