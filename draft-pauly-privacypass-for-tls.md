@@ -135,8 +135,6 @@ IP address, or a time window) to aid in token replay prevention.
 Servers MAY combine sending `privacy_pass_challenge` extensions with
 a `cookie` extension ({{TLS13, Section 4.2.2}}).
 
-(TODO example)
-
 # Presenting Privacy Pass Tokens in Encrypted Client Hello {#token_extension}
 
 Clients can include Privacy Pass tokens in TLS handshakes using the
@@ -157,10 +155,14 @@ The `token` field uses the `Token` structure defined in {{PPAUTH, Section 2.1.1}
 
 # Security Considerations
 
-TODO Security
+Servers redeeming Privacy Pass tokens in TLS handshakes need to take care to
+avoid replay attacks. Using a redemption context in the challenge makes it
+far easier to validate that tokens are new and unique.
 
-- Preventing replay attacks
-- Privacy/timing attacks
+Token issuance types that don't require clients talking to an issuance server
+with a new network request for every token generation will have better properties
+for privacy, since the client won't make a new request after each TLS handshake
+challenge.
 
 # IANA Considerations
 
