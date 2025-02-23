@@ -1,0 +1,162 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2025-02-23T00:27:42.228975+00:00",
+  "repo": "tfpauly/draft-privacypass-for-tls",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDONycg7s6onaGj",
+      "title": "Add security considerations",
+      "url": "https://github.com/tfpauly/draft-privacypass-for-tls/issues/1",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-02-04T01:24:13Z",
+      "updatedAt": "2025-02-04T01:24:13Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 2,
+      "id": "I_kwDONycg7s6onaNF",
+      "title": "Add examples and diagrams",
+      "url": "https://github.com/tfpauly/draft-privacypass-for-tls/issues/2",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-02-04T01:24:31Z",
+      "updatedAt": "2025-02-04T01:24:31Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDONycg7s6onaSq",
+      "title": "Discuss recommendations for token types",
+      "url": "https://github.com/tfpauly/draft-privacypass-for-tls/issues/3",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Maybe favor types like ARC or BBS",
+      "createdAt": "2025-02-04T01:24:47Z",
+      "updatedAt": "2025-02-04T01:24:47Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDONycg7s6onasx",
+      "title": "How should clients indicate they won't include a token?",
+      "url": "https://github.com/tfpauly/draft-privacypass-for-tls/issues/4",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "We don't want a situation where a client can't present a token, but the server keeps sending challenges.\n\nlikely the solution is to pair the challenge with a cookie. If the client comes back with a cookie and no token, then the server assumes that the client can't or won't get a token. We need to explain this!",
+      "createdAt": "2025-02-04T01:26:28Z",
+      "updatedAt": "2025-02-04T01:26:28Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 5,
+      "id": "PR_kwDONycg7s6KDTwH",
+      "title": "Typos and whatnot",
+      "url": "https://github.com/tfpauly/draft-privacypass-for-tls/pull/5",
+      "state": "MERGED",
+      "author": "chris-wood",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-02-04T20:50:21Z",
+      "updatedAt": "2025-02-04T21:20:20Z",
+      "baseRepository": "tfpauly/draft-privacypass-for-tls",
+      "baseRefName": "main",
+      "baseRefOid": "1f517c0b2cc5bc9ad8c775776bd8e76bcf69f3e2",
+      "headRepository": "tfpauly/draft-privacypass-for-tls",
+      "headRefName": "chris-wood-patch-1",
+      "headRefOid": "072a2ffb95c03e5626cdd2ba8913850c0920b6cb",
+      "closedAt": "2025-02-04T21:20:19Z",
+      "mergedAt": "2025-02-04T21:20:19Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "77dbbe781c5a30108eddc0b01322ad84449a8492"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONycg7s6anreQ",
+          "commit": {
+            "abbreviatedOid": "072a2ff"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-04T21:20:07Z",
+          "updatedAt": "2025-02-04T21:20:07Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
+}
