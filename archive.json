@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-27T00:25:53.633328+00:00",
+  "timestamp": "2025-03-02T00:28:10.996880+00:00",
   "repo": "tfpauly/draft-privacypass-for-tls",
   "labels": [
     {
@@ -154,6 +154,46 @@
           "body": "",
           "createdAt": "2025-02-04T21:20:07Z",
           "updatedAt": "2025-02-04T21:20:07Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDONycg7s6M_0eB",
+      "title": "Recommend BBS/ARC types",
+      "url": "https://github.com/tfpauly/draft-privacypass-for-tls/pull/6",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #3",
+      "createdAt": "2025-02-28T23:30:47Z",
+      "updatedAt": "2025-03-01T11:47:49Z",
+      "baseRepository": "tfpauly/draft-privacypass-for-tls",
+      "baseRefName": "main",
+      "baseRefOid": "77dbbe781c5a30108eddc0b01322ad84449a8492",
+      "headRepository": "tfpauly/draft-privacypass-for-tls",
+      "headRefName": "tfpauly-patch-1",
+      "headRefOid": "6a1d394e38b7436754f46816473d730f512bc69e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONycg7s6eGF_D",
+          "commit": {
+            "abbreviatedOid": "6a1d394"
+          },
+          "author": "smhendrickson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-01T11:47:49Z",
+          "updatedAt": "2025-03-01T11:47:49Z",
           "comments": []
         }
       ]
