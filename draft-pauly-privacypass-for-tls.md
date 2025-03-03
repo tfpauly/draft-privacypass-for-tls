@@ -160,6 +160,26 @@ The `privacy_pass_token` extension has the following format:
 
 The `token` field uses the `Token` structure defined in {{PPAUTH, Section 2.1.1}}.
 
+Tokens are generally presented after receiving a challenge, but a client MAY
+include a token without having received a challenge if it has other out-of-band
+configuration to do so.
+
+## Handling Inability to Present Tokens
+
+Servers need to be able to detect when clients are unable to present a token after
+receiving a challenge. A client might be unable to present tokens because it
+has reached a token rate limit, because it does not have a way to generate tokens
+for the required token issuer, or simply because it does not support this
+specification.
+
+The RECOMMENDED approach to handle such cases is for the server to include a
+`cookie` extension ({{TLS13, Section 4.2.2}}) along with the challenge, and
+for clients to retry the handshake including the `cookie` extension, but
+not including the `privacy_pass_token` extension. Servers can then assume
+that the client received the challenge and was unable to generate a valid
+token. The policy for what servers do in such cases will be specific
+to the overall use case, and beyond the scope of this document.
+
 # Applicable Token Types {#applicable-types}
 
 This document is defined such that any Privacy Pass token type would be possible
