@@ -160,16 +160,29 @@ The `privacy_pass_token` extension has the following format:
 
 The `token` field uses the `Token` structure defined in {{PPAUTH, Section 2.1.1}}.
 
+# Applicable Token Types {#applicable-types}
+
+This document is defined such that any Privacy Pass token type would be possible
+to use in the TLS handshake. However, different token types will have different
+properties for latency, replay protection, and privacy.
+
+Ideally, deployments can use token types that allow for unique redemption contexts
+(to prevent replay attacks) that also do not require communicating with a token
+attester or issuer for each token creation (thus improving latency, and not
+creating new activity that can be used to fingerprint clients). Some proposed
+token types like {{?ARC=I-D.yun-privacypass-arc}} and
+{{?BBS=I-D.ladd-privacypass-bbs}} have these properties.
+
 # Security Considerations
 
 Servers redeeming Privacy Pass tokens in TLS handshakes need to take care to
 avoid replay attacks. Using a fresh redemption context in the challenge ensures
 that tokens are equally fresh and unique.
 
-Token issuance types that don't require clients talking to an issuance server
-with a new network request for every token generation will have better properties
-for privacy, since the client won't make a new request after each TLS handshake
-challenge.
+As discussed in {{applicable-types}}, token issuance types that don't require
+clients talking to an issuance server with a new network request for every token
+generation will have better properties for privacy, since the client won't make
+a new request after each TLS handshake challenge.
 
 # IANA Considerations
 
