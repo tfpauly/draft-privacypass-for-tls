@@ -1170,6 +1170,11 @@ part of processing TLS handshakes.<a href="#section-abstract-1" class="pilcrow">
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-presenting-privacy-pass-tok" class="internal xref">Presenting Privacy Pass Tokens in Encrypted Client Hello</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-handling-inability-to-prese" class="internal xref">Handling Inability to Present Tokens</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-applicable-token-types" class="internal xref">Applicable Token Types</a></p>
@@ -1337,6 +1342,28 @@ the wire, and making it easier to trivially replay tokens to a server.<a href="#
 </pre><a href="#section-5-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5-4">The <code>token</code> field uses the <code>Token</code> structure defined in <span>[<a href="#PPAUTH" class="cite xref">PPAUTH</a>], <a href="https://rfc-editor.org/rfc/rfc9576#section-2.1.1" class="relref">Section 2.1.1</a></span>.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">Tokens are generally presented after receiving a challenge, but a client <span class="bcp14">MAY</span>
+include a token without having received a challenge if it has other out-of-band
+configuration to do so.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<div id="handling-inability-to-present-tokens">
+<section id="section-5.1">
+        <h3 id="name-handling-inability-to-prese">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-handling-inability-to-prese" class="section-name selfRef">Handling Inability to Present Tokens</a>
+        </h3>
+<p id="section-5.1-1">Servers need to be able to detect when clients are unable to present a token after
+receiving a challenge. A client might be unable to present tokens because it
+has reached a token rate limit, because it does not have a way to generate tokens
+for the required token issuer, or simply because it does not support this
+specification.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">The <span class="bcp14">RECOMMENDED</span> approach to handle such cases is for the server to include a
+<code>cookie</code> extension (<span>[<a href="#TLS13" class="cite xref">TLS13</a>], <a href="https://rfc-editor.org/rfc/rfc8446#section-4.2.2" class="relref">Section 4.2.2</a></span>) along with the challenge, and
+for clients to retry the handshake including the <code>cookie</code> extension, but
+not including the <code>privacy_pass_token</code> extension. Servers can then assume
+that the client received the challenge and was unable to generate a valid
+token. The policy for what servers do in such cases will be specific
+to the overall use case, and beyond the scope of this document.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="applicable-types">
