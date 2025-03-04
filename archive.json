@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-02T00:28:10.996880+00:00",
+  "timestamp": "2025-03-04T00:26:10.223619+00:00",
   "repo": "tfpauly/draft-privacypass-for-tls",
   "labels": [
     {
@@ -53,7 +53,7 @@
     {
       "number": 1,
       "id": "I_kwDONycg7s6onaGj",
-      "title": "Add security considerations",
+      "title": "Expand security considerations",
       "url": "https://github.com/tfpauly/draft-privacypass-for-tls/issues/1",
       "state": "OPEN",
       "author": "tfpauly",
@@ -62,7 +62,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2025-02-04T01:24:13Z",
-      "updatedAt": "2025-02-04T01:24:13Z",
+      "updatedAt": "2025-03-03T16:26:51Z",
       "closedAt": null,
       "comments": []
     },
@@ -87,15 +87,15 @@
       "id": "I_kwDONycg7s6onaSq",
       "title": "Discuss recommendations for token types",
       "url": "https://github.com/tfpauly/draft-privacypass-for-tls/issues/3",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tfpauly",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Maybe favor types like ARC or BBS",
       "createdAt": "2025-02-04T01:24:47Z",
-      "updatedAt": "2025-02-04T01:24:47Z",
-      "closedAt": null,
+      "updatedAt": "2025-03-03T16:26:18Z",
+      "closedAt": "2025-03-03T16:26:18Z",
       "comments": []
     },
     {
@@ -103,14 +103,30 @@
       "id": "I_kwDONycg7s6onasx",
       "title": "How should clients indicate they won't include a token?",
       "url": "https://github.com/tfpauly/draft-privacypass-for-tls/issues/4",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tfpauly",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "We don't want a situation where a client can't present a token, but the server keeps sending challenges.\n\nlikely the solution is to pair the challenge with a cookie. If the client comes back with a cookie and no token, then the server assumes that the client can't or won't get a token. We need to explain this!",
       "createdAt": "2025-02-04T01:26:28Z",
-      "updatedAt": "2025-02-04T01:26:28Z",
+      "updatedAt": "2025-03-03T21:46:58Z",
+      "closedAt": "2025-03-03T21:46:58Z",
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "I_kwDONycg7s6sZ9bg",
+      "title": "Clarify intended use case",
+      "url": "https://github.com/tfpauly/draft-privacypass-for-tls/issues/8",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The text says\n\n> Some server deployments enforce rate-limiting on TLS [[TLS13](https://www.ietf.org/archive/id/draft-pauly-privacypass-for-tls-00.html#TLS13)] handshakes to prevent denial-of-service (DoS) attacks, particularly by rate limiting the number of connections allowed from individual client IP addresses or IP address subnets. This is common in scenarios where the cost of handling a terminated TLS connection is significantly higher than handling the initial handshake, like in L7 loadbalancers with heavy-weight protocol conversions after termination.\n\nThis second sentence seems upside-down to me.  Surely TLS rate-limiting is most common on connections where post-handshake processing of unauthenticated connections is very light, so TLS handshakes themselves constitute the major CPU DoS vulnerability.\n\n> ... For such cases, even if clients are able to provide Privacy Pass Tokens or similar proofs at the HTTP layer, their connections might be denied or rate-limiting during TLS session establishment.\n\nThis seems to acknowledge that Privacy Pass token verification is generally no less expensive than a TLS handshake, so it is not a suitable DoS defense against an attacker who seeks to waste time on TLS handshakes.  Instead, this is intended to protect servers that perform \"heavy-weight protocol conversions\".  What is a \"heavy-weight protocol conversion\"?\n\nThe next paragraph seems to imply that the interior protocol is HTTP.  But what is so expensive that has to happen before the first HTTP request, which could carry a token to mark the connection?\n\nThe announcement email mentions \"non-HTTP cases\", which presumably are motivating here because they do not have mappings for Privacy Pass Authentication.  But are we sure that moving the authentication into TLS is the right solution, rather than defining such a mapping?  An example of such a protocol would help to motivate the design.",
+      "createdAt": "2025-03-03T22:43:21Z",
+      "updatedAt": "2025-03-03T22:43:21Z",
       "closedAt": null,
       "comments": []
     }
@@ -163,24 +179,26 @@
       "id": "PR_kwDONycg7s6M_0eB",
       "title": "Recommend BBS/ARC types",
       "url": "https://github.com/tfpauly/draft-privacypass-for-tls/pull/6",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tfpauly",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Closes #3",
       "createdAt": "2025-02-28T23:30:47Z",
-      "updatedAt": "2025-03-01T11:47:49Z",
+      "updatedAt": "2025-03-03T16:26:17Z",
       "baseRepository": "tfpauly/draft-privacypass-for-tls",
       "baseRefName": "main",
       "baseRefOid": "77dbbe781c5a30108eddc0b01322ad84449a8492",
       "headRepository": "tfpauly/draft-privacypass-for-tls",
       "headRefName": "tfpauly-patch-1",
       "headRefOid": "6a1d394e38b7436754f46816473d730f512bc69e",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-03-03T16:26:17Z",
+      "mergedAt": "2025-03-03T16:26:17Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "89f75e864b15d2afd55f2592ee891b418dd8d55c"
+      },
       "comments": [],
       "reviews": [
         {
@@ -195,8 +213,49 @@
           "createdAt": "2025-03-01T11:47:49Z",
           "updatedAt": "2025-03-01T11:47:49Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDONycg7s6eHCbJ",
+          "commit": {
+            "abbreviatedOid": "6a1d394"
+          },
+          "author": "cathieyun",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM :)",
+          "createdAt": "2025-03-02T07:02:19Z",
+          "updatedAt": "2025-03-02T07:02:19Z",
+          "comments": []
         }
       ]
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDONycg7s6NLa_9",
+      "title": "Explain not being able to generate tokens",
+      "url": "https://github.com/tfpauly/draft-privacypass-for-tls/pull/7",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #4",
+      "createdAt": "2025-03-03T16:34:54Z",
+      "updatedAt": "2025-03-03T21:46:57Z",
+      "baseRepository": "tfpauly/draft-privacypass-for-tls",
+      "baseRefName": "main",
+      "baseRefOid": "89f75e864b15d2afd55f2592ee891b418dd8d55c",
+      "headRepository": "tfpauly/draft-privacypass-for-tls",
+      "headRefName": "tfpauly-patch-2",
+      "headRefOid": "d2dec337c6546e41e0a4e5eb8c07eb246411fa4b",
+      "closedAt": "2025-03-03T21:46:57Z",
+      "mergedAt": "2025-03-03T21:46:57Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "98406e2081ba099ad3af18eb5d5320198a162a6d"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
