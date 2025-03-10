@@ -5,8 +5,8 @@
 Privacy Pass                                                    T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Informational                            S. Hendrickson
-Expires: 4 September 2025                                         Google
-                                                            3 March 2025
+Expires: 11 September 2025                                        Google
+                                                           10 March 2025
 
 
             Including Privacy Pass Tokens in TLS Handshakes
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2025.
+   This Internet-Draft will expire on 11 September 2025.
 
 Copyright Notice
 
@@ -286,9 +286,10 @@ Table of Contents
               Pass Architecture", RFC 9576, DOI 10.17487/RFC9576, June
               2024, <https://www.rfc-editor.org/rfc/rfc9576>.
 
-   [PPAUTH]   Davidson, A., Iyengar, J., and C. A. Wood, "The Privacy
-              Pass Architecture", RFC 9576, DOI 10.17487/RFC9576, June
-              2024, <https://www.rfc-editor.org/rfc/rfc9576>.
+   [PPAUTH]   Pauly, T., Valdez, S., and C. A. Wood, "The Privacy Pass
+              HTTP Authentication Scheme", RFC 9577,
+              DOI 10.17487/RFC9577, June 2024,
+              <https://www.rfc-editor.org/rfc/rfc9577>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,

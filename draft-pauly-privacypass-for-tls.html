@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Pauly &amp; Hendrickson</td>
-<td class="center">Expires 4 September 2025</td>
+<td class="center">Expires 11 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-pauly-privacypass-for-tls-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-03" class="published">3 March 2025</time>
+<time datetime="2025-03-10" class="published">10 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-04">4 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-11">11 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1127,7 +1127,7 @@ part of processing TLS handshakes.<a href="#section-abstract-1" class="pilcrow">
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1297,12 +1297,12 @@ server can send a Hello Retry Request (<span>[<a href="#TLS13" class="cite xref"
 <ul class="normal">
 <li class="normal" id="section-4-5.1">
           <p id="section-4-5.1.1"><code>challenge</code> contains a <code>TokenChallenge</code> structure, as defined in
-<span>[<a href="#PPAUTH" class="cite xref">PPAUTH</a>], <a href="https://rfc-editor.org/rfc/rfc9576#section-2.1.1" class="relref">Section 2.1.1</a></span>.<a href="#section-4-5.1.1" class="pilcrow">¶</a></p>
+<span>[<a href="#PPAUTH" class="cite xref">PPAUTH</a>], <a href="https://rfc-editor.org/rfc/rfc9577#section-2.1.1" class="relref">Section 2.1.1</a></span>.<a href="#section-4-5.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-5.2">
           <p id="section-4-5.2.1"><code>token_key</code> contains a public key for use with the issuance protocol,
 where applicable. This is equivalent to the <code>token-key</code> parameter used
-in HTTP authentication challenges discussed in <span>[<a href="#PPAUTH" class="cite xref">PPAUTH</a>], <a href="https://rfc-editor.org/rfc/rfc9576#section-2.1.1" class="relref">Section 2.1.1</a></span>.
+in HTTP authentication challenges discussed in <span>[<a href="#PPAUTH" class="cite xref">PPAUTH</a>], <a href="https://rfc-editor.org/rfc/rfc9577#section-2.1.1" class="relref">Section 2.1.1</a></span>.
 The <code>token_key</code> may be empty (have a zero length), in which case clients
 are expected to fetch the token key for a particular issuer name in
 another way.<a href="#section-4-5.2.1" class="pilcrow">¶</a></p>
@@ -1341,7 +1341,7 @@ the wire, and making it easier to trivially replay tokens to a server.<a href="#
       } PrivacyPassToken;
 </pre><a href="#section-5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-5-4">The <code>token</code> field uses the <code>Token</code> structure defined in <span>[<a href="#PPAUTH" class="cite xref">PPAUTH</a>], <a href="https://rfc-editor.org/rfc/rfc9576#section-2.1.1" class="relref">Section 2.1.1</a></span>.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-4">The <code>token</code> field uses the <code>Token</code> structure defined in <span>[<a href="#PPAUTH" class="cite xref">PPAUTH</a>], <a href="https://rfc-editor.org/rfc/rfc9577#section-2.1.1" class="relref">Section 2.1.1</a></span>.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <p id="section-5-5">Tokens are generally presented after receiving a challenge, but a client <span class="bcp14">MAY</span>
 include a token without having received a challenge if it has other out-of-band
 configuration to do so.<a href="#section-5-5" class="pilcrow">¶</a></p>
@@ -1444,7 +1444,7 @@ to "Yes", and the "Comment" column set to "Only appears in inner CH."<a href="#s
 <dd class="break"></dd>
 <dt id="PPAUTH">[PPAUTH]</dt>
         <dd>
-<span class="refAuthor">Davidson, A.</span>, <span class="refAuthor">Iyengar, J.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"The Privacy Pass Architecture"</span>, <span class="seriesInfo">RFC 9576</span>, <span class="seriesInfo">DOI 10.17487/RFC9576</span>, <time datetime="2024-06" class="refDate">June 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9576">https://www.rfc-editor.org/rfc/rfc9576</a>&gt;</span>. </dd>
+<span class="refAuthor">Pauly, T.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"The Privacy Pass HTTP Authentication Scheme"</span>, <span class="seriesInfo">RFC 9577</span>, <span class="seriesInfo">DOI 10.17487/RFC9577</span>, <time datetime="2024-06" class="refDate">June 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9577">https://www.rfc-editor.org/rfc/rfc9577</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
