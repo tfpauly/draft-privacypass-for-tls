@@ -50,7 +50,7 @@ that can be used to verify properties of a network entity, such as proving that 
 client passed some attestation check, without being linkable to other tokens
 or revealing identities.
 
-{{!PPAUTH=RFC9576}} defines how Privacy Pass Tokens can be requested by HTTP servers
+{{!PPAUTH=RFC9577}} defines how Privacy Pass Tokens can be requested by HTTP servers
 (via an authentication challenge) and provided by HTTP clients. This is useful
 for providing privacy-preserving authentication or attestation in HTTP workflows.
 However, Privacy Pass Tokens can also be used in other contexts and protocols.
