@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-09T00:23:50.087818+00:00",
+  "timestamp": "2025-03-11T00:26:34.973345+00:00",
   "repo": "tfpauly/draft-privacypass-for-tls",
   "labels": [
     {
@@ -122,11 +122,13 @@
       "state": "OPEN",
       "author": "bemasc",
       "authorAssociation": "NONE",
-      "assignees": [],
+      "assignees": [
+        "smhendrickson"
+      ],
       "labels": [],
       "body": "The text says\n\n> Some server deployments enforce rate-limiting on TLS [[TLS13](https://www.ietf.org/archive/id/draft-pauly-privacypass-for-tls-00.html#TLS13)] handshakes to prevent denial-of-service (DoS) attacks, particularly by rate limiting the number of connections allowed from individual client IP addresses or IP address subnets. This is common in scenarios where the cost of handling a terminated TLS connection is significantly higher than handling the initial handshake, like in L7 loadbalancers with heavy-weight protocol conversions after termination.\n\nThis second sentence seems upside-down to me.  Surely TLS rate-limiting is most common on connections where post-handshake processing of unauthenticated connections is very light, so TLS handshakes themselves constitute the major CPU DoS vulnerability.\n\n> ... For such cases, even if clients are able to provide Privacy Pass Tokens or similar proofs at the HTTP layer, their connections might be denied or rate-limiting during TLS session establishment.\n\nThis seems to acknowledge that Privacy Pass token verification is generally no less expensive than a TLS handshake, so it is not a suitable DoS defense against an attacker who seeks to waste time on TLS handshakes.  Instead, this is intended to protect servers that perform \"heavy-weight protocol conversions\".  What is a \"heavy-weight protocol conversion\"?\n\nThe next paragraph seems to imply that the interior protocol is HTTP.  But what is so expensive that has to happen before the first HTTP request, which could carry a token to mark the connection?\n\nThe announcement email mentions \"non-HTTP cases\", which presumably are motivating here because they do not have mappings for Privacy Pass Authentication.  But are we sure that moving the authentication into TLS is the right solution, rather than defining such a mapping?  An example of such a protocol would help to motivate the design.",
       "createdAt": "2025-03-03T22:43:21Z",
-      "updatedAt": "2025-03-03T22:43:21Z",
+      "updatedAt": "2025-03-10T22:05:34Z",
       "closedAt": null,
       "comments": []
     }
