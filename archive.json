@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-11T00:26:34.973345+00:00",
+  "timestamp": "2025-03-13T00:26:46.145004+00:00",
   "repo": "tfpauly/draft-privacypass-for-tls",
   "labels": [
     {
@@ -128,9 +128,38 @@
       "labels": [],
       "body": "The text says\n\n> Some server deployments enforce rate-limiting on TLS [[TLS13](https://www.ietf.org/archive/id/draft-pauly-privacypass-for-tls-00.html#TLS13)] handshakes to prevent denial-of-service (DoS) attacks, particularly by rate limiting the number of connections allowed from individual client IP addresses or IP address subnets. This is common in scenarios where the cost of handling a terminated TLS connection is significantly higher than handling the initial handshake, like in L7 loadbalancers with heavy-weight protocol conversions after termination.\n\nThis second sentence seems upside-down to me.  Surely TLS rate-limiting is most common on connections where post-handshake processing of unauthenticated connections is very light, so TLS handshakes themselves constitute the major CPU DoS vulnerability.\n\n> ... For such cases, even if clients are able to provide Privacy Pass Tokens or similar proofs at the HTTP layer, their connections might be denied or rate-limiting during TLS session establishment.\n\nThis seems to acknowledge that Privacy Pass token verification is generally no less expensive than a TLS handshake, so it is not a suitable DoS defense against an attacker who seeks to waste time on TLS handshakes.  Instead, this is intended to protect servers that perform \"heavy-weight protocol conversions\".  What is a \"heavy-weight protocol conversion\"?\n\nThe next paragraph seems to imply that the interior protocol is HTTP.  But what is so expensive that has to happen before the first HTTP request, which could carry a token to mark the connection?\n\nThe announcement email mentions \"non-HTTP cases\", which presumably are motivating here because they do not have mappings for Privacy Pass Authentication.  But are we sure that moving the authentication into TLS is the right solution, rather than defining such a mapping?  An example of such a protocol would help to motivate the design.",
       "createdAt": "2025-03-03T22:43:21Z",
-      "updatedAt": "2025-03-10T22:05:34Z",
+      "updatedAt": "2025-03-11T15:04:45Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for the review, Ben.\n\n> Surely TLS rate-limiting is most common on connections where post-handshake processing of unauthenticated connections is very light, so TLS handshakes themselves constitute the major CPU DoS vulnerability.\n\nWhile I wish this were true there are many cases where rate limiting at the TLS terminator is defending an expensive serving path. A simple example is one where the TLS terminator (think a load balancer) converts requests into GRPC. Each subsequent GRPC request might include a pile of extra metadata, meaning an attacker can 'multiply' each packet they send by the side of the headers required to add into the request. Yes, tough architecture to defend, but also it has been observed and can be hard to migrate away from. This can get worse if the TLS terminator is close to the user, but the subsequent application server is centralized or behind a more expensive network hop.\n\n> What is a \"heavy-weight protocol conversion\"?\nHopefully the above gives a good example of this - maybe we need a different term than 'conversion'. It really just is for defending general 'heavy weight protocols' by moving the challenge verification earlier in the termination chain.",
+          "createdAt": "2025-03-11T14:17:53Z",
+          "updatedAt": "2025-03-11T14:17:53Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "NONE",
+          "body": "> A simple example is one where the TLS terminator (think a load balancer) converts requests into GRPC.\n\nOK, but in this case a TLS handshake rate limit doesn't provide meaningful defense.  The attacker can use a small number of TLS connections (or a larger number built up gradually over time) to send a huge volume of requests, exploiting the amplification effect.  This situation demands a request rate limit, not a handshake rate limit.",
+          "createdAt": "2025-03-11T14:45:36Z",
+          "updatedAt": "2025-03-11T14:45:36Z"
+        },
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The request rate limit in privacy pass would be provided indirectly by the attester here. Yes - that only applies to use cases that can support providing this rate limiting from attesters. An example might be an attester that can give a device integrity attestation.",
+          "createdAt": "2025-03-11T14:49:05Z",
+          "updatedAt": "2025-03-11T14:49:05Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "NONE",
+          "body": "My point is that rate-limiting TLS handshakes doesn't achieve your security goal.  The attacker does not require a large number of TLS handshakes to issue an overwhelming number of requests.\n\nIt sounds like you expect to rate limit requests indirectly by limiting the amount of work performed for each TLS connection, e.g. after N requests, the server closes the connection to force a repeat handshake, which requires the client to spend another token.\n\nThat seems like a fairly logical arrangement, but it isn't mentioned in the draft.  If that's the expectation, please note it in the draft.\n\nIf this is the intention, it also raises the question: why not just rate-limit the requests directly?  If the gateway can validate tokens in the TLS handshake, why can't it validate tokens in the HTTP requests?",
+          "createdAt": "2025-03-11T15:04:44Z",
+          "updatedAt": "2025-03-11T15:04:44Z"
+        }
+      ]
     }
   ],
   "pulls": [
